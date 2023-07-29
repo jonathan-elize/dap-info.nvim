@@ -1,8 +1,8 @@
 local M = {}
 
-local breakpoint_info_utils = require("dap-reveal.breakpoint-info-utils")
-local virt_text_util = require("dap-reveal.virt-text-utils")
-local config = require("dap-reveal.config")
+local breakpoint_info_utils = require("dap-info.breakpoint-info-utils")
+local virt_text_util = require("dap-info.virt-text-utils")
+local config = require("dap-info.config")
 
 local setup_commands = function()
   vim.api.nvim_create_user_command("DapInfoNextBp", function()

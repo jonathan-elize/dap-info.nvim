@@ -1,7 +1,7 @@
 local M = {}
 
-local config = require("dap-reveal.config")
-local breakpoint_util = require("dap-reveal.breakpoint-utils")
+local config = require("dap-info.config")
+local breakpoint_util = require("dap-info.breakpoint-utils")
 
 _DAP_INFO_VIRT_TEXT_MAP = {}
 

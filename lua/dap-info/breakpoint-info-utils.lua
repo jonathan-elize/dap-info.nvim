@@ -1,8 +1,8 @@
 local M = {}
 
-local config = require("dap-reveal.config")
-local noti_utils = require("dap-reveal.noti-utils")
-local breakpoint_utils = require("dap-reveal.breakpoint-utils")
+local config = require("dap-info.config")
+local noti_utils = require("dap-info.noti-utils")
+local breakpoint_utils = require("dap-info.breakpoint-utils")
 
 function M.custom_set_breakpoint(condition, hit_condition, log_message)
   local dap = require("dap")
