@@ -76,13 +76,11 @@ function M.show_breakpoint_property(target, property, silent)
       title = title,
       message = message,
       syntax = vim.bo.filetype,
-      focus_id = config.focus_id,
     })
   else
     local title = "DAP - Logpoint"
     noti_utils.show_popup({
       title = title,
-      focus_id = config.focus_id,
       message = "Outputs: '" .. message .. "'.",
       syntax = "lua",
     })

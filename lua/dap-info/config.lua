@@ -1,7 +1,6 @@
 local config = {}
 
 config = {
-  focus_id = "dap-info",
   virt_text_opts = {
     namespace = "dap-info",
     prefix = "●",

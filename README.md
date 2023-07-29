@@ -25,8 +25,6 @@ Below is the default config, you can change it according to your needs.
 
 ```lua
 require('persistent-breakpoints').setup{
-  -- focu_id used for popup
-  focus_id = "dap-info",
   -- options used for virtual text ui
   virt_text_opts = {
     namespace = "dap-info",
@@ -66,7 +64,3 @@ Shows virtual text revealing information about breakpoints within current buffer
 ### **:DapInfoReloadVirtText**
 
 Reloads virtual text revealing information about breakpoints within current buffer. (Essentially the same as running `DapInfoClearVirtText` and `DapInfoShowVirtText` one after another)
-
-## Issues
-
-- There seems to be a bug when trying to show the info for a breakpoint when using `DapInfoPrevBp` or `DapInfoNextBp` where the data won't show in a popup
