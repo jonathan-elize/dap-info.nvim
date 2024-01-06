@@ -26,6 +26,8 @@ function M.update_breakpoint_on_current_line()
     targetProperty = "logMessage"
   elseif target.condition ~= nil then
     targetProperty = "condition"
+  elseif target.hitCondition ~= nil then
+    targetProperty = "hitCondition"
   else
     noti_utils.echo_message("Ignoring since this is not a special breakpoint.", vim.log.levels.WARN)
     return
@@ -34,6 +36,10 @@ function M.update_breakpoint_on_current_line()
   if targetProperty == "condition" then
     vim.ui.input({ prompt = "Breakpoint condition: ", default = target.condition }, function(input)
       M.custom_set_breakpoint(input, nil, nil)
+    end)
+  elseif targetProperty == "hitCondition" then
+    vim.ui.input({ prompt = "Hit condition: ", default = target.hitCondition }, function(input)
+      M.custom_set_breakpoint(nil, input, nil)
     end)
   else
     vim.ui.input({ prompt = "Log point message: ", default = target.logMessage }, function(input)
@@ -56,6 +62,8 @@ function M.show_breakpoint_property(target, property, silent)
       finalProperty = "logMessage"
     elseif target.condition ~= nil then
       finalProperty = "condition"
+    elseif target.hitCondition ~= nil then
+      finalProperty = "hitCondition"
     else
       if not silent then
         noti_utils.echo_message("No extra information to pull from this breakpoint.", vim.log.levels.WARN)
@@ -72,6 +80,13 @@ function M.show_breakpoint_property(target, property, silent)
 
   if finalProperty == "condition" then
     local title = "DAP - Conditional Breakpoint"
+    noti_utils.show_popup({
+      title = title,
+      message = message,
+      syntax = vim.bo.filetype,
+    })
+  elseif finalProperty == "hitCondition" then
+    local title = "DAP - Hit Conditional Breakpoint"
     noti_utils.show_popup({
       title = title,
       message = message,
@@ -138,7 +153,7 @@ function M.go_to_next_breakpoint(go_to_prev)
   vim.fn.cursor({ target.line, start_column })
 
   -- FIX: Doesn't seem to be working properly
-  if target.logMessage ~= nil or target.condition ~= nil then
+  if breakpoint_utils.is_special_breakpoint(target) then
     vim.schedule(function()
       M.show_breakpoint_property(target)
     end)

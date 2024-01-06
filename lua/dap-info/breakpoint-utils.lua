@@ -44,4 +44,12 @@ function M.get_breakpoints_on_current_line()
   return M.get_breakpoints_on_line(current_line)
 end
 
+function M.is_special_breakpoint(target)
+  if target.logMessage ~= nil or target.condition ~= nil or target.hitCondition ~= nil then
+    return true
+  else
+    return false
+  end
+end
+
 return M

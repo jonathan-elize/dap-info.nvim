@@ -9,26 +9,22 @@ local BREAK_POINT_TYPES = {
   REGULAR = 0,
   LOG_POINT = 1,
   CONDITIONAL = 2,
+  HIT_CONDITIONAL = 3,
 }
 local VIRTUAL_TEXT_HIGHLIGHT_MAP = {
   [BREAK_POINT_TYPES.CONDITIONAL] = "DapBreakpointCondition",
   [BREAK_POINT_TYPES.LOG_POINT] = "DapLogPoint",
   [BREAK_POINT_TYPES.REGULAR] = "DapBreakpoint",
+  [BREAK_POINT_TYPES.HIT_CONDITIONAL] = "DapBreakpointHitCondition",
 }
-
-function M.is_special_breakpoint(target)
-  if target.logMessage ~= nil or target.condition ~= nil then
-    return true
-  else
-    return false
-  end
-end
 
 function M.get_breakpoint_type(target)
   if target.logMessage ~= nil then
     return BREAK_POINT_TYPES.LOG_POINT
   elseif target.condition ~= nil then
     return BREAK_POINT_TYPES.CONDITIONAL
+  elseif target.hitCondition ~= nil then
+    return BREAK_POINT_TYPES.HIT_CONDITIONAL
   else
     return BREAK_POINT_TYPES.REGULAR
   end
@@ -67,7 +63,7 @@ end
 function M.create_virt_text_chunks_by_breakpoints(breakpoints)
   local special_breakpoints = {}
   for _, breakpoint in ipairs(breakpoints) do
-    if M.is_special_breakpoint(breakpoint) then
+    if breakpoint_util.is_special_breakpoint(breakpoint) then
       special_breakpoints[#special_breakpoints + 1] = breakpoint
     end
   end
@@ -101,6 +97,8 @@ function M.create_virt_text_chunks_by_breakpoints(breakpoints)
     message = last_special_breakpoint.condition
   elseif last_breakpoint_type == BREAK_POINT_TYPES.LOG_POINT then
     message = last_special_breakpoint.logMessage
+  elseif last_breakpoint_type == BREAK_POINT_TYPES.HIT_CONDITIONAL then
+    message = last_special_breakpoint.hitCondition
   end
 
   if type(suffix) == "function" then
